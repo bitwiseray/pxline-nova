@@ -7,7 +7,7 @@
 }
 
 body {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3));
+  background: #1b1b1b;
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
@@ -109,14 +109,4 @@ body {
   color: black;
   font-size: 14px;
   margin: 5px 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)), url('/assets/gatewayimg-pc.webp');
-  }
-  /* .register-container {
-    width: 450px;
-    height: 350px;
-  } */
 }
