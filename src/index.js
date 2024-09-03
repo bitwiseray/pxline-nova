@@ -8,6 +8,8 @@ const listerApp = express();
 const server = http.createServer(listerApp);
 const io = socket(server);
 
+listerApp.use(express.static(path.join(__dirname, '..', 'client', 'src')));
+
 listerApp.use(express.json());
 // listerApp.use('/api/v1', require('./routes/source-routes'));
 listerApp.use('/', require('./routes/routes'));
