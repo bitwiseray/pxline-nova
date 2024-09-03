@@ -1,0 +1,31 @@
+{
+  "name": "pxline-nova",
+  "version": "1.0.0",
+  "description": "Final version of PxLine",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitwiseray/pxline-nova.git"
+  },
+  "keywords": [
+    "chat-app",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Ray",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitwiseray/pxline-nova/issues"
+  },
+  "homepage": "https://github.com/bitwiseray/pxline-nova#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.6.1",
+    "socket.io": "^4.7.5"
+  }
+}
