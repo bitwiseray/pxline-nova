@@ -7,6 +7,7 @@ const { checkAuth, checkNotAuth } = require('../config/validators');
 const fs = require('fs');
 const path = require('path');
 const SourceRooms = require('../utils/source-rooms');
+const SourceProfiles = require('../utils/source-users');
 
 router.get('/indexes', checkAuth, async (request, reply) => {
     try {
@@ -48,8 +49,8 @@ router.get('/chat/:id/', checkAuth, async (request, reply) => {
             }
             reply.status(200).json(toSendData);
         } else {
-            await checkChats(request.user._id.toString(), id, 'DM');
-            const usrOffload = await UserSources.loadUser(id, request.user._id, '_id user_name display_name image chats createdAt');
+            // await checkChats(request.user._id.toString(), id, 'DM');
+            const usrOffload = await SourceProfiles.loadUser(id, request.user._id, '_id user_name display_name image chats createdAt');
             const toSendData = {
                 type: 'DM',
                 extusers: usrOffload.user,
@@ -60,7 +61,7 @@ router.get('/chat/:id/', checkAuth, async (request, reply) => {
             reply.status(200).json(toSendData);
         }
     } catch (e) {
-        reply.status(500).send({ code: 'INTERNAL_ERROR', message: 'Something went wrong while fetching data', error: error });
+        reply.status(500).send({ code: 'INTERNAL_ERROR', message: 'Something went wrong while fetching data', error: e });
         console.error({ at: '/api/v1/chat', error: e });
     }
 });
