@@ -1,6 +1,5 @@
 const Room = require('../models/Room');
 const Chat = require('../models/Chat');
-const Profiles = require('../models/Profile');
 
 class SourceRooms {
     static async loadRoom(id, loads) {
