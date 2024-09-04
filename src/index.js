@@ -12,7 +12,6 @@ const server = http.createServer(listerApp);
 const io = socket(server);
 
 listerApp.use(express.static(path.join(__dirname, '..', 'client', 'src')));
-
 listerApp.use(express.json());
 listerApp.use(express.urlencoded({ extended: true }));
 listerApp.use(session({
