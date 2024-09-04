@@ -12,8 +12,8 @@ router.get('/login', (request, reply) => {
     reply.sendFile(getViewFilePath('login.html'));
 });
 
-router.get('/me', (request, reply) => {
-    reply.sendFile(getViewFilePath('login.html'));
+router.get('/me', checkAuth, (request, reply) => {
+    reply.sendFile(getViewFilePath('me.html'));
 });
 
 router.get('/', checkAuth, async (request, reply) => {
