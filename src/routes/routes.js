@@ -12,8 +12,12 @@ router.get('/login', (request, reply) => {
     reply.sendFile(getViewFilePath('login.html'));
 });
 
-router.get('/me', checkAuth, (request, reply) => {
-    reply.sendFile(getViewFilePath('me.html'));
+router.get('/chat', checkAuth, (request, reply) => {
+    reply.sendFile(getViewFilePath('index.html'));
+});
+
+router.get('/chat/me', checkAuth, (request, reply) => {
+    reply.sendFile(getViewFilePath('index.html'));
 });
 
 router.get('/', checkAuth, async (request, reply) => {
@@ -32,7 +36,7 @@ router.post('/login', checkNotAuth, (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            return res.redirect('/');
+            return res.redirect('/chat/me');
         });
     })(req, res, next);
 });
