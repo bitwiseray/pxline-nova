@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:display=swap');
+
+:root {
+    --blush: #ff9baa;
+    --foreground: #F0F0F0;
+    --accent: #42cffe;
+    --lavender: #E6E6FA;
+    --highlight: #F08080;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.unload {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1;
+    background-color: #fff;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.unload img {
+    max-width: 30%;
+    animation: scaleRIX 4s ease-in-out infinite;    
+}
+
+@keyframes scaleRIX {
+    0%, 100% {
+        transform: scale(1.3);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+.hero {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+.chat-container {
+    width: 75.9%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+}
+
+.username {
+    font-weight: bold;
+    color: #333;
+}
+
+.last-seen {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.last-seen.online {
+    color: rgb(78, 230, 78);
+    font-weight: 600;
+}
+
+.last-seen.error {
+    color: rgb(212, 24, 24);
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 60%;
+}
+
+.header-actions:hover {
+    background-color: #dcdcdc;
+    transition: 0.2s ease;
+}
+
+.chat-content {
+    padding: 15px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: 900px;
+}
+
+.chat-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-content::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #aaa;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: #aaa;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 0 1 10%;
+    border-bottom: 1px solid #aaa;
+    margin: 0 20px;
+}
+
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
+}
+
+.message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    flex-direction: row;
+    justify-content: flex-start;
+    animation: slideUp 0.3s ease-out;
+}
+
+.message.me {
+    justify-content: flex-end;
+}
+
+.message-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.message.me .message-pic {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.message-bubble {
+    max-width: 60%;
+    background-color: var(--blush);
+    padding: 11.5px;
+    border-radius: 25px;
+    position: relative;
+    margin-bottom: 3px;
+    color: var(--foreground);
+}
+
+.message.me .message-bubble {
+    background-color: var(--accent)
+}
+
+.timestamp {
+    display: none;
+    font-size: 11px;
+    color: #aaa;
+    position: absolute;
+    bottom: -15px;
+    left: 13.5px;
+}
+
+.message.me .timestamp {
+    left: 60px;
+}
+
+.message-image {
+    width: 290px;
+    height: 290px;
+    border-radius: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.chat-input>textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 19px;
+    border: 1px solid #ddd;
+    margin-left: 5px;
+    outline: none;
+    resize: none;
+    font-size: 15px;
+    height: 40px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.icon {
+    padding: 6px;
+    border-radius: 60%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.icon:hover {
+    background-color: #e3e3e3;
+    transition: 0.2s ease;
+}
