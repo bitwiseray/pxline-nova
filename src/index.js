@@ -22,7 +22,7 @@ listerApp.use(session({
 listerApp.use(passport.initialize());
 listerApp.use(passport.session());
 listerApp.use(flash());
-// listerApp.use('/api/v1', require('./routes/source-routes'));
+listerApp.use('/api/v1', require('./routes/source-routes'));
 listerApp.use('/', require('./routes/routes'));
 
 server.listen(8080, async () => {
