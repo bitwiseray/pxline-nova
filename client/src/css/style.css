@@ -24,15 +24,17 @@ body {
     justify-content: center;
     flex-direction: column;
     z-index: 1;
-    background-color: #fff;
     align-items: center;
     width: 100vw;
     height: 100vh;
+    background: rgba(255, 255, 255, 0.60);
+    backdrop-filter: blur(9.7px);
+    -webkit-backdrop-filter: blur(4.7px);
 }
 
 .unload img {
-    max-width: 30%;
-    animation: scaleRIX 4s ease-in-out infinite;    
+    max-width: 40%;
+    /* animation: scaleRIX 4s ease-in-out infinite;     */
 }
 
 @keyframes scaleRIX {
