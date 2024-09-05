@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const chatId = new URLSearchParams(window.location.search).get('id');
             if (!chatId) {
                 const firstKey = Array.from(addedChats)[0];
-                // if (firstKey) {
-                //     window.location.href = `/chat?id=${firstKey}`;
-                // }
+                if (firstKey) {
+                    // window.location.href = `/chat?id=${firstKey}`;
+                }
             } else {
                 const chatResponse = await fetch(`/api/v1/chat/${chatId}`);
                 if (chatResponse.ok) {
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         document.title = `Pxline - ${extusers.display_name}`;
                     }
                     localStorage.setItem('ext', JSON.stringify(chatData));
-                    ChatHandler.initialize();
+                    // ChatHandler.initialize();
                 } else {
                     unloader(true, { status: true, message: 'Something went wrong, please try again later or contact support' });
                     return;
@@ -179,5 +179,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         unloader(false);
     } catch (error) {
         unloader(true, { status: true, message: 'An unexpected error occurred. Please try again later or contact support.' });
+        console.error(error);
     }
 });
