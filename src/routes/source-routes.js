@@ -49,7 +49,7 @@ router.get('/chat/:id/', checkAuth, async (request, reply) => {
             }
             reply.status(200).json(toSendData);
         } else {
-            // await checkChats(request.user._id.toString(), id, 'DM');
+            await CardinalSource.checkChats(request.user._id.toString(), id, 'DM');
             const usrOffload = await SourceProfiles.loadUser(id, request.user._id, '_id user_name display_name image chats createdAt');
             const toSendData = {
                 type: 'DM',
