@@ -6,7 +6,7 @@ if (!ext || !ext.type || !ext.chats) {
 }
 
 const { type, room, chats, user } = ext;
-
+const input = document.querySelector('.input-field');
 
 class FactorSocketChats {
     static getSnowflakes() {
@@ -17,14 +17,12 @@ class FactorSocketChats {
         }
         return { status: 'FAILED', code: 'PUBLIC_INSTANCE_ERROR' };
     }
-
     static deleteMessage(id) {
         if (!id || !user?._id) {
             throw { status: 'HALTED', code: 'INVALID_OR_MISSING_DATA' };
         }
         socket.emit('delete', { id: id, by: user._id });
     }
-
     static joinRoom() {
         const { id, chatId } = this.getSnowflakes() || {};
         if (chatId) {
@@ -34,16 +32,67 @@ class FactorSocketChats {
             throw { status: 'HALTED', code: 'INVALID_OR_MISSING_DATA' };
         }
     }
+    static async sendMessage() {
+        let contents = input.value.trim();
+        // let attachments = file;
+        // let url = '';
+        // if (attachments) {
+        //   url = await uploadMedia(attachments);
+        // }
+        if (!contents && !attachments) return;
+        let chatDetails;
+        if (type === 'room') {
+            chatDetails = {
+                id: room._id,
+                name: room.title,
+                image: room.icon,
+                members: room.members,
+                chat_id: this.getSnowflakes().chatId,
+            };
+        } else {
+            chatDetails = {
+                id: extusers._id,
+                name: extusers.display_name,
+                image: extusers.image,
+                members: null,
+                chat_id: this.getSnowflakes().chatId,
+            };
+        }
+        socket.emit('message', {
+            content: { text: contents, timestamp: Date.now() },
+            author: {
+                id: user._id,
+                displayname: user.display_name,
+                username: user.user_name,
+                image: user.image,
+            },
+            room: chatDetails,
+            // attachments: url?.data?.url || null,
+        });
+        input.value = '';
+        // clearMediaFeedback();
+    }
 }
 
 class Socketinit {
     constructor() {
         this.setupSocketEvents();
+        this.setupSend();
         FactorSocketChats.joinRoom();
     }
     setupSocketEvents() {
         socket.on('messageCreate', (message) => {
-            MessageHandler.fillMessage(message.author.displayname, message.author.image, message.content.text, message.attachments, message.content.timestamp, message.id)
+            MessageHandler.fillMessage(message.author.displayname, message.author.image, message.content.text, message.attachments, message.content.timestamp, message.author.id)
+        });
+    }
+    setupSend() {
+        document.addEventListener('keydown', (e) => {
+            input.focus();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                if (!input.value) return;
+                e.preventDefault();
+                FactorSocketChats.sendMessage();
+            }
         });
     }
 }
