@@ -6,7 +6,6 @@ const passport = require('passport');
 const http = require('http');
 const flash = require('express-flash');
 const socket = require('socket.io');
-require('dotenv').config();
 const listerApp = express();
 const server = http.createServer(listerApp);
 const io = socket(server);
@@ -25,6 +24,7 @@ listerApp.use(flash());
 listerApp.use('/api/v1', require('./routes/source-routes'));
 listerApp.use('/', require('./routes/routes'));
 
+require('dotenv').config();
 require('./sockets/message')(io);
 
 server.listen(8080, async () => {
