@@ -10,6 +10,9 @@ const listerApp = express();
 const server = http.createServer(listerApp);
 const io = socket(server);
 
+require('dotenv').config();
+require('./sockets/message')(io);
+
 listerApp.use(express.static(path.join(__dirname, '..', 'client', 'src')));
 listerApp.use(express.json());
 listerApp.use(express.urlencoded({ extended: true }));
@@ -24,8 +27,7 @@ listerApp.use(flash());
 listerApp.use('/api/v1', require('./routes/source-routes'));
 listerApp.use('/', require('./routes/routes'));
 
-require('dotenv').config();
-require('./sockets/message')(io);
+
 
 server.listen(8080, async () => {
     await mongoose.connect(process.env.srv);
