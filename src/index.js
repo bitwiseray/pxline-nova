@@ -25,6 +25,8 @@ listerApp.use(flash());
 listerApp.use('/api/v1', require('./routes/source-routes'));
 listerApp.use('/', require('./routes/routes'));
 
+require('./sockets/message')(io);
+
 server.listen(8080, async () => {
     await mongoose.connect(process.env.srv);
     console.log(`Server is running on http://localhost:8080`);
