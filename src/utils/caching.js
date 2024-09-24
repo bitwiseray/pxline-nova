@@ -1,4 +1,4 @@
-const Chat = require('../schematics/chats');
+const Chat = require('../models/Chat');
 const Cache = new Map();
 
 function isMatchFn(chats, svdChatsFromDB) {
