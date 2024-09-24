@@ -1,5 +1,5 @@
 const Profile = require('../models/Profile');
-const { saveChats, cacheChats, deleteMessage } = require('../utils/chats-offloader');
+const { saveChats, cacheChats, deleteMessage } = require('../utils/caching');
 
 class ChatManager {
   constructor(io) {
