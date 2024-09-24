@@ -27,6 +27,7 @@
 
 .nav-item:hover {
     background-color: #dcdcdc;
+    border-radius: 5px;
 }
 
 .nav-icon {

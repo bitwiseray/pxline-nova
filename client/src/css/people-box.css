@@ -62,9 +62,9 @@
     border: 1px solid rgb(173 173 173 / 57%);
 }
 
-.recent-label:hover .dropdown-menu {
+/* .recent-label:hover .dropdown-menu {
     display: block;
-}
+} */
 
 .dropdown-item {
     padding: 8px 16px;
@@ -76,7 +76,8 @@
 }
 
 .dropdown-item:hover {
-    background-color: #f0f0f0;
+    background-color: #cacaca;
+    border-radius: 4px;
     /* Hover color for items */
 }
 
