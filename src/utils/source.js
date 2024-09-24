@@ -60,7 +60,7 @@ class CardinalSource {
           )
         );
         if (commonChat) {
-          return { status: 'HALTED', code: 'CHAT_EXISTS', error: null };
+          return { status: 'COMPLETE', code: 'CHAT_EXISTS', error: null };
         } else {
           const newId = await Chat.create({
             timestamp: Date.now(),
