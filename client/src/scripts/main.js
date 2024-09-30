@@ -41,13 +41,13 @@ function formatTimestamp(timestamp, compact) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const chatContent = document.querySelector('.chat-content');
   const images = chatContent.querySelectorAll('img');
   images.forEach(image => {
-      image.addEventListener('click', function() {
-          showFullSizeImage(this.src);
-      });
+    image.addEventListener('click', function () {
+      showFullSizeImage(this.src);
+    });
   });
 });
 
@@ -77,8 +77,8 @@ function showFullSizeImage(src) {
   closeButton.style.fontSize = '40px';
   closeButton.style.color = 'white';
   closeButton.style.cursor = 'pointer';
-  closeButton.addEventListener('click', function() {
-      document.body.removeChild(overlay);
+  closeButton.addEventListener('click', function () {
+    document.body.removeChild(overlay);
   });
   overlay.appendChild(fullSizeImage);
   overlay.appendChild(closeButton);
@@ -91,19 +91,35 @@ function unloader(loading, error = {}) {
   if (!fr || !note) return;
 
   if (loading) {
-      fr.style.display = 'flex';
-      if (error.status) {
-          note.textContent = error.message || 'Failed to connect to the server, try again later...';
-          note.style.display = 'block';
-      } else {
-          note.style.display = 'none';
-      }
+    fr.style.display = 'flex';
+    if (error.status) {
+      note.textContent = error.message || 'Failed to connect to the server, try again later...';
+      note.style.display = 'block';
+    } else {
+      note.style.display = 'none';
+    }
   } else {
-      fr.style.display = 'none';
+    fr.style.display = 'none';
   }
 }
 
-document.querySelector('.sort').addEventListener('click', function() {
+document.querySelector('.sort').addEventListener('click', function () {
   const dropdown = document.querySelector('.dropdown-menu');
   dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 });
+
+function readyMenuChats() {
+  document.querySelectorAll('.message-bubble').forEach(message => {
+    message.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      console.log('Set active message as: ', message.getAttribute('id'))
+      let dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.left = `${e.pageX}px`;
+      dropdown.style.top = `${e.pageY}px`;
+      dropdown.classList.add('active');
+    });
+  });
+  document.addEventListener('click', function () {
+    document.getElementById('dropdownMenu').classList.remove('active');
+  });
+}

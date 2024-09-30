@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         unloader(false);
+        readyMenuChats()
     } catch (error) {
         unloader(true, { status: true, message: 'An unexpected error occurred. Please try again later or contact support.' });
         console.error(error);
