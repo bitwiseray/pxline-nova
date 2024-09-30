@@ -10,7 +10,7 @@
 .search-bar {
     display: flex;
     align-items: center;
-    background-color: var(--lavender);
+    border: 1px solid #aaa;
     padding: 10px;
     border-radius: 20px;
     margin-bottom: 10px;
