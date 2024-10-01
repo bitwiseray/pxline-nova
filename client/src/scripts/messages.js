@@ -3,6 +3,7 @@ const ext = JSON.parse(localStorage.getItem('ext'));
 
 if (!ext || !ext.type || !ext.chats) {
     throw { status: 'SYSTEM_ERROR', code: 'NO_EXT_LOAD_FOUND' };
+    showErrorModal();
 }
 
 const { type, room, chats, user } = ext;
@@ -15,7 +16,7 @@ class FactorSocketChats {
         } else if (type === 'DM') {
             return { id: chats?._id, chatId: chats?._id, idType: 'same' };
         }
-        return { status: 'FAILED', code: 'PUBLIC_INSTANCE_ERROR' };
+        throw { status: 'FAILED', code: 'PUBLIC_INSTANCE_ERROR' };
     }
     static deleteMessage(id) {
         if (!id || !user?._id) {
@@ -101,5 +102,6 @@ class Socketinit {
 try {
     new Socketinit();
 } catch (err) {
+    showErrorModal();
     console.error(`Error: ${err.status} - ${err.code}`);
 }
