@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/css/people-box.css">
     <link rel="icon" href="/public/logo.jpg" type="image/x-icon" />
     <script defer src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/main.js"></script>
     <script defer src="/scripts/messages.js"></script>
     <script src="/scripts/messageUX.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -39,14 +40,13 @@
                     <g id="Error_1_">
                         <g id="Error">
                             <circle cx="16" cy="16" id="BG" r="16" style="fill:#D72828;" />
-                            <path d="M14.5,25h3v-3h-3V25z M14.5,6v13h3V6H14.5z" id="Exclamatory_x5F_Sign"
-                                style="fill:#E6E6E6;" />
+                            <path d="M14.5,25h3v-3h-3V25z M14.5,6v13h3V6H14.5z" id="Exclamatory_x5F_Sign" style="fill:#E6E6E6;" />
                         </g>
                     </g>
                 </g>
             </svg>
-            <h3>Something went wrong...</h3>
-            <p>Reload the page, if problem presist, create a issues pull <a href="https://github.com/bitwiseray/pxline-v2/issues" target="_blank">here</a>.</p>
+            <h3 id="error-title">Something went wrong...</h3>
+            <p id="error-message"></p>
             <button class="modal-btn" onclick="window.location.reload()">Reload</button>
         </div>
         <div class="nav-bar">
@@ -112,7 +112,6 @@
             </div>
         </div>
     </div>
-    <script src="/scripts/main.js"></script>
     <script src="/scripts/manageUI.js"></script>
 </body>
 </html>
