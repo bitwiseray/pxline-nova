@@ -125,7 +125,12 @@ function readyMenuChats() {
               MessageActionMenu.reply(messageId);
               break;
             case 'copy':
-              MessageActionMenu.copy(messageId);
+              let text = message.children[0].textContent;
+              if (text) {
+                MessageActionMenu.copy(text);
+              } else {
+                console.log('Something went wrong');
+              }
               break;
             case 'delete':
               MessageActionMenu.delete(messageId);
