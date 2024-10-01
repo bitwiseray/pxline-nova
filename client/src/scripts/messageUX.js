@@ -21,6 +21,11 @@ class MessageHandler {
         }
         const messageBubble = document.createElement('div');
         messageBubble.classList.add('message-bubble');
+        if (/^[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]+$/u.test(content.text)) {
+            console.log(content.text);
+            messageBubble.style.background = 'none';
+            messageBubble.style.fontSize = '35px';
+        }        
         messageBubble.innerHTML = `<p>${content}</p><span class="timestamp">${formatTimestamp(timestamp, true)}</span>`;
         messageDiv.appendChild(messageBubble);
         messageDiv.classList.add('animate');
@@ -30,5 +35,11 @@ class MessageHandler {
             container.scrollTop = container.scrollHeight;
             MessageHandler.firstTime = false;
         }
+    }
+}
+
+class MessageActionMenu {
+    static delete() {
+        FactorSocketChats.deleteMessage(id);
     }
 }

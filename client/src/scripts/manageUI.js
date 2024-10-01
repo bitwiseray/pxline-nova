@@ -88,6 +88,11 @@ class HandleUI {
                     attachImg.classList.add('message-image');
                     messageBubble.appendChild(attachImg);
                 }
+                if (/^[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]+$/u.test(content.text)) {
+                    console.log(content.text);
+                    messageBubble.style.background = 'none';
+                    messageBubble.style.fontSize = '35px';
+                }                
                 const timestampSpan = document.createElement('span');
                 timestampSpan.classList.add('timestamp');
                 timestampSpan.textContent = formatTimestamp(content.timestamp, true);
