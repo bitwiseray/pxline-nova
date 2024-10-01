@@ -108,44 +108,64 @@ document.querySelector('.sort').addEventListener('click', function () {
 });
 
 function readyMenuChats() {
-  document.querySelectorAll('.message-bubble').forEach(message => {
-    message.addEventListener('contextmenu', function (e) {
+  document.querySelectorAll('.message').forEach(messageContainer => {
+    const messageBubble = messageContainer.querySelector('.message-bubble');
+    if (!messageBubble) return;
+    messageBubble.addEventListener('contextmenu', function (e) {
       e.preventDefault();
-      let messageId = message.closest('.message').id;
-      console.log('Active message id: ', messageId);
-      let dropdown = document.getElementById('dropdownMenu');
+      const messageId = messageContainer.id;
+      const isMyMessage = messageContainer.classList.contains('me');
+      const dropdown = document.getElementById('dropdownMenu');
       dropdown.style.left = `${e.pageX}px`;
       dropdown.style.top = `${e.pageY}px`;
       dropdown.classList.add('active');
-      dropdown.addEventListener('click', function (e) {
+      document.getElementById('delete').style.display = isMyMessage ? 'block' : 'none';
+      const newDropdown = dropdown.cloneNode(true);
+      dropdown.parentNode.replaceChild(newDropdown, dropdown);
+      newDropdown.addEventListener('click', function (e) {
         if (e.target.classList.contains('message-dropdown-item')) {
-          let action = e.target.id;
+          const action = e.target.id;
           switch (action) {
             case 'reply':
               MessageActionMenu.reply(messageId);
               break;
             case 'copy':
-              let text = message.children[0].textContent;
+              const text = messageBubble.textContent.trim();
               if (text) {
                 MessageActionMenu.copy(text);
               } else {
-                console.log('Something went wrong');
+                showErrorModal('No text to copy');
               }
               break;
             case 'delete':
-              MessageActionMenu.delete(messageId);
+              if (isMyMessage) {
+                MessageActionMenu.delete(messageId);
+              } else {
+                showErrorModal('Failed to delete this message');
+              }
               break;
             case 'report':
               MessageActionMenu.report(messageId);
               break;
             default:
-              console.log('Unknown action');
+              showErrorModal('Unknown action');
           }
+          newDropdown.classList.remove('active');
         }
       });
     });
   });
-  document.addEventListener('click', function () {
-    document.getElementById('dropdownMenu').classList.remove('active');
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#dropdownMenu')) {
+      document.getElementById('dropdownMenu').classList.remove('active');
+    }
   });
+}
+
+function showErrorModal(title, moreinfo) {
+  const modal = document.querySelector('.modal');
+  modal.style.display = 'block';
+  document.getElementById('error-title').innerText = title || 'Something went wrong';
+  document.getElementById('error-message').innerHTML = moreinfo || 'Reload the page, if problem presist, create a issues pull <a href="https://github.com/bitwiseray/pxline-v2/issues" target="_blank">here</a>.';
 }
