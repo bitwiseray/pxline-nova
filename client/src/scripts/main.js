@@ -111,11 +111,33 @@ function readyMenuChats() {
   document.querySelectorAll('.message-bubble').forEach(message => {
     message.addEventListener('contextmenu', function (e) {
       e.preventDefault();
-      console.log('Set active message as: ', message.getAttribute('id'))
+      let messageId = message.closest('.message').id;
+      console.log('Active message id: ', messageId);
       let dropdown = document.getElementById('dropdownMenu');
       dropdown.style.left = `${e.pageX}px`;
       dropdown.style.top = `${e.pageY}px`;
       dropdown.classList.add('active');
+      dropdown.addEventListener('click', function (e) {
+        if (e.target.classList.contains('message-dropdown-item')) {
+          let action = e.target.id;
+          switch (action) {
+            case 'reply':
+              MessageActionMenu.reply(messageId);
+              break;
+            case 'copy':
+              MessageActionMenu.copy(messageId);
+              break;
+            case 'delete':
+              MessageActionMenu.delete(messageId);
+              break;
+            case 'report':
+              MessageActionMenu.report(messageId);
+              break;
+            default:
+              console.log('Unknown action');
+          }
+        }
+      });
     });
   });
   document.addEventListener('click', function () {
