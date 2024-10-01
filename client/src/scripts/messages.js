@@ -22,6 +22,7 @@ class FactorSocketChats {
             throw { status: 'HALTED', code: 'INVALID_OR_MISSING_DATA' };
         }
         socket.emit('delete', { id: id, by: user._id });
+        return { status: 'SUCCESS'}
     }
     static joinRoom() {
         const { id, chatId } = this.getSnowflakes() || {};
