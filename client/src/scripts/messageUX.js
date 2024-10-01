@@ -46,4 +46,12 @@ class MessageActionMenu {
             console.log('Something went wrong while deleting the message')
         }
     }
+    static async copy(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return { status: 'SUCCESS' };
+        } catch (error) {
+            return { status: 'FAILED' };
+        }
+    }    
 }
