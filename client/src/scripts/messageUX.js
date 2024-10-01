@@ -43,7 +43,7 @@ class MessageActionMenu {
         if (fall.status === 'SUCCESS') {
             document.getElementById(id).remove();
         } else {
-            console.log('Something went wrong while deleting the message')
+            throw { status: 'FAILED' };
         }
     }
     static async copy(text) {
@@ -51,7 +51,7 @@ class MessageActionMenu {
             await navigator.clipboard.writeText(text);
             return { status: 'SUCCESS' };
         } catch (error) {
-            return { status: 'FAILED' };
+            throw { status: 'FAILED' };
         }
     }    
 }
