@@ -119,6 +119,8 @@ input:-webkit-autofill:focus {
   height: 15px;
   vertical-align: middle;
   margin-right: 1px;
+  outline: none;
+  border: 1px solid #aaa;
 }
 
 .span {
