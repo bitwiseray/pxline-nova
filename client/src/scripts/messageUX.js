@@ -22,7 +22,6 @@ class MessageHandler {
         const messageBubble = document.createElement('div');
         messageBubble.classList.add('message-bubble');
         if (/^[\p{Emoji_Presentation}\p{Emoji}\u200d\ufe0f]+$/u.test(content.text)) {
-            console.log(content.text);
             messageBubble.style.background = 'none';
             messageBubble.style.fontSize = '35px';
         }        
@@ -39,7 +38,12 @@ class MessageHandler {
 }
 
 class MessageActionMenu {
-    static delete() {
-        FactorSocketChats.deleteMessage(id);
+    static delete(id) {
+        let fall = FactorSocketChats.deleteMessage(id);
+        if (fall.status === 'SUCCESS') {
+            document.getElementById(id).remove();
+        } else {
+            console.log('Something went wrong while deleting the message')
+        }
     }
 }
