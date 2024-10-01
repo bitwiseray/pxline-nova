@@ -41,16 +41,6 @@ function formatTimestamp(timestamp, compact) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const chatContent = document.querySelector('.chat-content');
-  const images = chatContent.querySelectorAll('img');
-  images.forEach(image => {
-    image.addEventListener('click', function () {
-      showFullSizeImage(this.src);
-    });
-  });
-});
-
 function showFullSizeImage(src) {
   const overlay = document.createElement('div');
   overlay.style.position = 'fixed';
@@ -85,11 +75,20 @@ function showFullSizeImage(src) {
   document.body.appendChild(overlay);
 }
 
+function setBigView() {
+  const chatContent = document.querySelector('.chat-content');
+  const images = chatContent.querySelectorAll('img');
+  images.forEach(image => {
+    image.addEventListener('click', function () {
+      showFullSizeImage(this.src);
+    });
+  });
+}
+
 function unloader(loading, error = {}) {
   const fr = document.querySelector('.unload');
   const note = document.querySelector('.note');
   if (!fr || !note) return;
-
   if (loading) {
     fr.style.display = 'flex';
     if (error.status) {
