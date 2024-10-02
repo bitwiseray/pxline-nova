@@ -2,38 +2,35 @@ const Chat = require('../models/Chat');
 const Cache = new Map();
 
 function isMatchFn(chats, svdChatsFromDB) {
-  if (!svdChatsFromDB) return false;
-  for (const chatFromDB of svdChatsFromDB) {
-    for (const localChat of chats) {
-      if (localChat.content.text === chatFromDB.content.text &&
-        Number(localChat.content.timestamp) === Number(chatFromDB.content.timestamp) &&
-        localChat.sender === chatFromDB.sender) {
-        return true;
-      }
-    }
-  }
-  return false;
+  if (!svdChatsFromDB || !Array.isArray(svdChatsFromDB)) return false;
+  return chats.some(localChat => 
+    svdChatsFromDB.some(chatFromDB => 
+      localChat.content.text === chatFromDB.content.text &&
+      Math.abs(Number(localChat.content.timestamp) - Number(chatFromDB.content.timestamp)) < 50 && localChat.sender === chatFromDB.sender)
+  );
 }
 
 async function saveChats(id) {
-  if (!id) return;
+  if (!id) return { status: 'FAILED', code: 'INVALID_ID', error: 'Invalid or missing id' };
   try {
-    let chat = await Chat.findById(id);
-    const chats = Cache.get(id);
-    if (!chat || !chats) {
-      return { status: 'Failed', code: 'NOT_FOUND', error: 'No cached entry or global entry for the provided id found' };
+    const chat = await Chat.findById(id);
+    const cachedChats = Cache.get(id);
+    if (!chat || !cachedChats) {
+      return { status: 'FAILED', code: 'NOT_FOUND', error: 'No cached entry or global entry for the provided id found' };
     }
-    const isMatch = isMatchFn(chats.svd_chats, chat.svd_chats);
+    const isMatch = isMatchFn(cachedChats.svd_chats, chat.svd_chats);
     if (!isMatch) {
-      await chat.updateOne({
+      await Chat.findByIdAndUpdate(id, {
         $push: {
-          svd_chats: { $each: chats.svd_chats }
+          svd_chats: { $each: cachedChats.svd_chats }
         }
-      });
+      }, { new: true });
     }
     Cache.delete(id);
+    return { status: 'SUCCESS', code: 'CHATS_SAVED', error: null };
   } catch (error) {
-    return { status: 'Failed', status: 'SYSTEM_ERROR', error: error };
+    console.error('Error saving chats:', error);
+    return { status: 'FAILED', code: 'SYSTEM_ERROR', error: error.message };
   }
 }
 
@@ -49,7 +46,7 @@ function handleCache(forId, handle) {
 }
 
 function cacheChats(id, chat) {
-  if (!chat) return { status: 'Failed', code: 'NOT_FOUND', error: 'No message object found' };;
+  if (!chat) return { status: 'FAILED', code: 'NOT_FOUND', error: 'No message object found' };
   if (!Cache.has(id)) {
     handleCache(id, 'create');
   }
@@ -64,30 +61,35 @@ function cacheChats(id, chat) {
   const existingCache = Cache.get(id);
   existingCache.svd_chats.push(toAppendObj);
   Cache.set(id, existingCache);
+  return { status: 'SUCCESS', code: 'CHAT_CACHED', error: null };
 }
 
 async function deleteMessage(id, by, chatId) {
-  if (id && by) {
-    let cache = Cache.get(chatId);
-    let thisCacheMessage = cache?.svd_chats?.length > 0 ? cache.svd_chats.find(message => message.sender == by) : undefined;
-    if (thisCacheMessage) {
-      cache.svd_chats = cache.svd_chats.filter(message => message.sender !== by);
-      return { status: 'Success', code: 'MESSAGE_DELETED', error: null };
-    } else {
-      try {
-        let chatsGlob = await Chat.findById(chatId);
-        if (!chatsGlob) {
-          return { status: 'Failed', code: 'NOT_FOUND', error: 'Chat not found' };
-        }
-        chatsGlob.svd_chats = chatsGlob.svd_chats.filter(message => !(message._id == id && message.sender == by));
-        await chatsGlob.save();
-        return { status: 'Success', code: 'MESSAGE_DELETED', error: null };
-      } catch (error) {
-        return { status: 'Failed', code: 'DATABASE_ERROR', error: error.message };
-      }
+  if (!id || !by || !chatId) {
+    return { status: 'FAILED', code: 'INVALID_DATA', error: 'Missing required parameters' };
+  }
+  let cache = Cache.get(chatId);
+  if (cache?.svd_chats?.length > 0) {
+    const initialLength = cache.svd_chats.length;
+    cache.svd_chats = cache.svd_chats.filter(message => message.sender !== by || message.content._id !== id);
+    if (cache.svd_chats.length < initialLength) {
+      Cache.set(chatId, cache);
+      return { status: 'SUCCESS', code: 'MESSAGE_DELETED', error: null };
     }
-  } else {
-    return { status: 'Failed', code: 'INVALID_DATA', error: 'No cached entry or global entry for the provided id found' };
+  }
+  try {
+    const result = await Chat.findByIdAndUpdate(
+      chatId,
+      { $pull: { svd_chats: { _id: id, sender: by } } },
+      { new: true }
+    );
+    if (!result) {
+      return { status: 'FAILED', code: 'NOT_FOUND', error: 'Chat not found' };
+    }
+    return { status: 'SUCCESS', code: 'MESSAGE_DELETED', error: null };
+  } catch (error) {
+    console.error('Error deleting message:', error);
+    return { status: 'FAILED', code: 'DATABASE_ERROR', error: error.message };
   }
 }
 
