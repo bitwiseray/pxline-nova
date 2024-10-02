@@ -326,17 +326,20 @@ body {
     transition: 0.2s ease;
 }
 
-/* Dropdown Menu Styling */
 .message-dropdown-menu {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(2.8px);
     -webkit-backdrop-filter: blur(2.8px);
     border-radius: 14px;
     padding: 10px;
-    z-index: 100;
+    z-index: 1000;
+    min-width: 150px;
+    max-width: 250px;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
 }
 
 .message-dropdown-item {
@@ -348,18 +351,21 @@ body {
     margin-top: 5px;
     color: #000;
     border-radius: 5px;
+    white-space: nowrap; /* Prevents text wrapping */
 }
 
 .message-dropdown-item span.material-symbols-outlined {
     margin-right: 20px;
     font-size: 24.5px;
     color: #000;
+    flex-shrink: 0;
 }
 
 .message-dropdown-item:hover {
-    background-color: rgb(114 114 114 / 20%);
+    background-color: rgba(114, 114, 114, 0.2);
 }
 
-.active {
+.message-dropdown-menu.active {
     display: block;
+    opacity: 1;
 }
