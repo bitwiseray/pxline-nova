@@ -102,12 +102,13 @@ function unloader(loading, error = {}) {
   }
 }
 
-document.querySelector('.sort').addEventListener('click', function () {
+document.getElementById('sort').addEventListener('click', function () {
   const dropdown = document.querySelector('.dropdown-menu');
   dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 });
 
 function readyMenuChats() {
+  const VIEWPORT_MARGIN = 40;
   document.querySelectorAll('.message').forEach(messageContainer => {
     const messageBubble = messageContainer.querySelector('.message-bubble');
     if (!messageBubble) return;
@@ -116,46 +117,35 @@ function readyMenuChats() {
       const messageId = messageContainer.id;
       const isMyMessage = messageContainer.classList.contains('me');
       const dropdown = document.getElementById('dropdownMenu');
-      dropdown.style.left = `${e.pageX}px`;
-      dropdown.style.top = `${e.pageY}px`;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const dropdownRect = dropdown.getBoundingClientRect();
+      const dropdownWidth = dropdownRect.width;
+      const dropdownHeight = dropdownRect.height;
+      let left = e.clientX;
+      let top = e.clientY;
+      if (left + dropdownWidth > viewportWidth - VIEWPORT_MARGIN) {
+        left = viewportWidth - dropdownWidth - VIEWPORT_MARGIN;
+      }
+      left = Math.max(VIEWPORT_MARGIN, left);
+      if (top + dropdownHeight > viewportHeight - VIEWPORT_MARGIN) {
+        top = viewportHeight - dropdownHeight - VIEWPORT_MARGIN;
+      }
+      top = Math.max(VIEWPORT_MARGIN, top);
+      dropdown.style.left = `${left}px`;
+      dropdown.style.top = `${top}px`;
       dropdown.classList.add('active');
       document.getElementById('delete').style.display = isMyMessage ? 'block' : 'none';
       const newDropdown = dropdown.cloneNode(true);
       dropdown.parentNode.replaceChild(newDropdown, dropdown);
       newDropdown.addEventListener('click', function (e) {
         if (e.target.classList.contains('message-dropdown-item')) {
-          const action = e.target.id;
-          switch (action) {
-            case 'reply':
-              MessageActionMenu.reply(messageId);
-              break;
-            case 'copy':
-              const text = messageBubble.textContent.trim();
-              if (text) {
-                MessageActionMenu.copy(text);
-              } else {
-                showErrorModal('No text to copy');
-              }
-              break;
-            case 'delete':
-              if (isMyMessage) {
-                MessageActionMenu.delete(messageId);
-              } else {
-                showErrorModal('Failed to delete this message');
-              }
-              break;
-            case 'report':
-              MessageActionMenu.report(messageId);
-              break;
-            default:
-              showErrorModal('Unknown action');
-          }
+          handleMenuAction(e.target.id, messageId, isMyMessage, messageBubble);
           newDropdown.classList.remove('active');
         }
       });
     });
   });
-
   document.addEventListener('click', function (e) {
     if (!e.target.closest('#dropdownMenu')) {
       document.getElementById('dropdownMenu').classList.remove('active');
@@ -163,9 +153,38 @@ function readyMenuChats() {
   });
 }
 
+function handleMenuAction(action, messageId, isMyMessage, messageBubble) {
+  switch (action) {
+    case 'reply':
+      MessageActionMenu.reply(messageId);
+      break;
+    case 'copy':
+      const text = messageBubble.textContent.trim();
+      if (text) {
+        MessageActionMenu.copy(text);
+      } else {
+        showErrorModal('No text to copy');
+      }
+      break;
+    case 'delete':
+      if (isMyMessage) {
+        MessageActionMenu.delete(messageId);
+      } else {
+        showErrorModal('Failed to delete this message');
+      }
+      break;
+    case 'report':
+      MessageActionMenu.report(messageId);
+      break;
+    default:
+      showErrorModal('Unknown action');
+  }
+}
+
 function showErrorModal(title, moreinfo) {
   const modal = document.querySelector('.modal');
   modal.style.display = 'block';
   document.getElementById('error-title').innerText = title || 'Something went wrong';
-  document.getElementById('error-message').innerHTML = moreinfo || 'Reload the page, if problem presist, create a issues pull <a href="https://github.com/bitwiseray/pxline-v2/issues" target="_blank">here</a>.';
+  document.getElementById('error-message').innerHTML = moreinfo || 'Reload the page, if problem persists, create an issue <a href="https://github.com/bitwiseray/pxline-v2/issues" target="_blank">here</a>.';
+  document.querySelector('.hero').classList.add('blur-body');
 }
