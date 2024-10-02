@@ -2,11 +2,11 @@ const socket = io('/');
 const ext = JSON.parse(localStorage.getItem('ext'));
 
 if (!ext || !ext.type || !ext.chats) {
+    showErrorModal('SYSTEM_ERROR');
     throw { status: 'SYSTEM_ERROR', code: 'NO_EXT_LOAD_FOUND' };
-    showErrorModal();
 }
 
-const { type, room, chats, user } = ext;
+const { type, room, chats, user, extusers } = ext;
 const input = document.querySelector('.input-field');
 
 class FactorSocketChats {
@@ -102,6 +102,6 @@ class Socketinit {
 try {
     new Socketinit();
 } catch (err) {
-    showErrorModal();
+    showErrorModal(`Task ${err?.status}: ${err?.code}`);
     console.error(`Error: ${err.status} - ${err.code}`);
 }
