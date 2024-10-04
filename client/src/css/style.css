@@ -311,14 +311,14 @@ body {
 
 .chat-input>textarea {
     flex: 1;
-    padding: 10px;
+    padding: 13px;
     border-radius: 19px;
     border: 1px solid #ddd;
     margin-left: 5px;
     outline: none;
     resize: none;
-    font-size: 15px;
-    height: 40px;
+    font-size: 16px;
+    height: 46.5px;
     font-family: 'Poppins', sans-serif;
 }
 
