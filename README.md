@@ -4,11 +4,7 @@
 This is a **hobbyist** project for a full-stack chat application built by very 'professional and experienced dev', using Node.js, the Express.js framework, and of course, vanilla web! 
 
 ### Note
-All claimed features may not be available or may be only halfway done. Instability and bugs are expected until this note is removed.
-<details>
-  <summary>Why?</summary>
-  This is a hobbyist project as well as a very large one, so we will focus on adding all the claimed features before focusing on stability and bug fixing.
-</details>
+All claimed features may not be available or may be only halfway done. Instability and bugs are expected until the project moves out from 'early' phase.
 
 ### Features
 [] = Feature wrappped in this is under maintenance or not yet created.
