@@ -1,6 +1,6 @@
 ![PxLine logo banner](https://raw.githubusercontent.com/bitwiseray/pxline-v2/main/public/assets/20240418_220716.jpg)
 
-## Full-Stack Chat App: PxLine (Early)
+## Full-Stack Chat App: PxLine (No longer in developemnt)
 This is a **hobbyist** project for a full-stack chat application built by very 'professional and experienced dev', using Node.js, the Express.js framework, and of course, vanilla web! 
 
 ### Note
